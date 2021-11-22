@@ -1,0 +1,331 @@
+{
+  "vanillajs": {
+    "would_use": 20709,
+    "would_not_use": 10434,
+    "never_heard": 448,
+    "not_interested": 1494,
+    "interested": 879
+  },
+  "es6": {
+    "would_use": 45474,
+    "interested": 6220,
+    "would_not_use": 748,
+    "never_heard": 884,
+    "not_interested": 795
+  },
+  "coffeescript": {
+    "not_interested": 6208,
+    "would_use": 590,
+    "would_not_use": 2449,
+    "never_heard": 139,
+    "interested": 871
+  },
+  "typescript": {
+    "would_use": 46953,
+    "interested": 27412,
+    "would_not_use": 5559,
+    "not_interested": 15191,
+    "never_heard": 821
+  },
+  "elm": {
+    "not_interested": 36151,
+    "never_heard": 27831,
+    "interested": 26247,
+    "would_use": 4239,
+    "would_not_use": 1540
+  },
+  "clojurescript": {
+    "not_interested": 48247,
+    "never_heard": 28713,
+    "interested": 15904,
+    "would_use": 1986,
+    "would_not_use": 1125
+  },
+  "nofrontendframework": {
+    "would_use": 14311,
+    "never_heard": 5332,
+    "would_not_use": 7501,
+    "not_interested": 5014,
+    "interested": 1805
+  },
+  "react": {
+    "would_use": 61199,
+    "interested": 18743,
+    "not_interested": 8962,
+    "would_not_use": 6650,
+    "never_heard": 193
+  },
+  "angular": {
+    "would_use": 20107,
+    "interested": 16166,
+    "would_not_use": 24046,
+    "not_interested": 35155,
+    "never_heard": 483
+  },
+  "ember": {
+    "not_interested": 61777,
+    "interested": 15218,
+    "would_not_use": 7030,
+    "would_use": 4187,
+    "never_heard": 7723
+  },
+  "vuejs": {
+    "interested": 38520,
+    "not_interested": 20289,
+    "never_heard": 4619,
+    "would_use": 28511,
+    "would_not_use": 3925
+  },
+  "backbone": {
+    "not_interested": 17488,
+    "interested": 3509,
+    "would_not_use": 8202,
+    "never_heard": 1815,
+    "would_use": 2949
+  },
+  "redux": {
+    "not_interested": 10920,
+    "never_heard": 4819,
+    "would_use": 42712,
+    "interested": 24919,
+    "would_not_use": 12081
+  },
+  "mobx": {
+    "not_interested": 21762,
+    "never_heard": 44901,
+    "would_use": 5970,
+    "interested": 20447,
+    "would_not_use": 2453
+  },
+  "relay": {
+    "not_interested": 17766,
+    "never_heard": 53559,
+    "interested": 21001,
+    "would_not_use": 1338,
+    "would_use": 1864
+  },
+  "rest": {
+    "would_use": 28713,
+    "would_not_use": 1121,
+    "not_interested": 503,
+    "interested": 2673,
+    "never_heard": 953
+  },
+  "firebase": {
+    "would_not_use": 1362,
+    "not_interested": 7450,
+    "interested": 10801,
+    "would_use": 7309,
+    "never_heard": 7041
+  },
+  "graphql": {
+    "would_not_use": 1538,
+    "never_heard": 10461,
+    "interested": 50837,
+    "not_interested": 8066,
+    "would_use": 24665
+  },
+  "apollo": {
+    "would_not_use": 1702,
+    "never_heard": 43561,
+    "interested": 26830,
+    "not_interested": 8609,
+    "would_use": 14801
+  },
+  "falcor": {
+    "never_heard": 25669,
+    "interested": 4159,
+    "not_interested": 3844,
+    "would_use": 152,
+    "would_not_use": 139
+  },
+  "horizon": {
+    "never_heard": 8671,
+    "interested": 939,
+    "not_interested": 528,
+    "would_use": 102,
+    "would_not_use": 17
+  },
+  "meteor": {
+    "interested": 18279,
+    "not_interested": 44505,
+    "would_use": 5109,
+    "never_heard": 18992,
+    "would_not_use": 8026
+  },
+  "feathers": {
+    "never_heard": 54735,
+    "interested": 5322,
+    "not_interested": 11481,
+    "would_use": 1233,
+    "would_not_use": 723
+  },
+  "donejs": {
+    "never_heard": 9048,
+    "not_interested": 902,
+    "interested": 241,
+    "would_not_use": 40,
+    "would_use": 26
+  },
+  "mern": {
+    "never_heard": 8297,
+    "interested": 623,
+    "would_use": 436,
+    "not_interested": 829,
+    "would_not_use": 72
+  },
+  "mean": {
+    "would_use": 2204,
+    "never_heard": 2695,
+    "interested": 1498,
+    "would_not_use": 1125,
+    "not_interested": 2735
+  },
+  "mocha": {
+    "interested": 23672,
+    "never_heard": 8955,
+    "would_use": 39810,
+    "not_interested": 13563,
+    "would_not_use": 8833
+  },
+  "jasmine": {
+    "interested": 19958,
+    "would_use": 30221,
+    "never_heard": 15701,
+    "not_interested": 17768,
+    "would_not_use": 11267
+  },
+  "enzyme": {
+    "never_heard": 37586,
+    "would_use": 14363,
+    "not_interested": 7452,
+    "interested": 11517,
+    "would_not_use": 2735
+  },
+  "jest": {
+    "interested": 22849,
+    "never_heard": 22777,
+    "not_interested": 6877,
+    "would_use": 40133,
+    "would_not_use": 2015
+  },
+  "cucumberjs": {
+    "never_heard": 4866,
+    "interested": 1706,
+    "would_not_use": 641,
+    "would_use": 968,
+    "not_interested": 2076
+  },
+  "ava": {
+    "never_heard": 69736,
+    "interested": 8175,
+    "would_use": 4375,
+    "not_interested": 10612,
+    "would_not_use": 1998
+  },
+  "plaincss": {
+    "would_use": 24347,
+    "would_not_use": 8311,
+    "never_heard": 270,
+    "interested": 388,
+    "not_interested": 647
+  },
+  "sass": {
+    "would_use": 25341,
+    "interested": 3941,
+    "never_heard": 359,
+    "would_not_use": 2416,
+    "not_interested": 1906
+  },
+  "less": {
+    "would_use": 11212,
+    "not_interested": 8972,
+    "never_heard": 934,
+    "interested": 4187,
+    "would_not_use": 8658
+  },
+  "cssmodules": {
+    "interested": 4368,
+    "never_heard": 2675,
+    "would_use": 2153,
+    "not_interested": 888,
+    "would_not_use": 173
+  },
+  "aphrodite": {
+    "never_heard": 9125,
+    "interested": 532,
+    "not_interested": 446,
+    "would_not_use": 39,
+    "would_use": 115
+  },
+  "webpack": {
+    "interested": 9173,
+    "would_use": 37774,
+    "never_heard": 2118,
+    "would_not_use": 3534,
+    "not_interested": 2255
+  },
+  "grunt": {
+    "would_use": 7804,
+    "would_not_use": 14885,
+    "interested": 3068,
+    "never_heard": 936,
+    "not_interested": 7270
+  },
+  "gulp": {
+    "would_use": 21714,
+    "would_not_use": 17232,
+    "interested": 5613,
+    "never_heard": 2562,
+    "not_interested": 7990
+  },
+  "browserify": {
+    "interested": 8288,
+    "would_use": 10823,
+    "would_not_use": 12395,
+    "never_heard": 8464,
+    "not_interested": 15142
+  },
+  "bower": {
+    "interested": 1019,
+    "would_use": 3264,
+    "would_not_use": 3736,
+    "never_heard": 320,
+    "not_interested": 1918
+  },
+  "nativeapps": {
+    "not_interested": 20954,
+    "interested": 30827,
+    "would_use": 18012,
+    "never_heard": 21005,
+    "would_not_use": 3785
+  },
+  "reactnative": {
+    "would_use": 21147,
+    "not_interested": 19352,
+    "interested": 47531,
+    "never_heard": 2920,
+    "would_not_use": 3719
+  },
+  "cordova": {
+    "would_use": 11368,
+    "would_not_use": 19511,
+    "not_interested": 37067,
+    "never_heard": 15158,
+    "interested": 11650
+  },
+  "phonegap": {
+    "not_interested": 3906,
+    "would_use": 1544,
+    "would_not_use": 1825,
+    "never_heard": 1298,
+    "interested": 1684
+  },
+  "nativescript": {
+    "interested": 12461,
+    "never_heard": 23843,
+    "not_interested": 15782,
+    "would_use": 1046,
+    "would_not_use": 776
+  }
+}
