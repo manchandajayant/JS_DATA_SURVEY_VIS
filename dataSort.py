@@ -87,7 +87,7 @@ def getAllValues(data):
                 expArr.append(newStr)
 
 
-getAllValues(data)
+
 
 with open('SORTED_DATA/experience_range.json', 'w') as outfile:
     json.dump(expArr, outfile)
@@ -97,3 +97,7 @@ with open('SORTED_DATA/experience_range.json', 'w') as outfile:
 **********Calculate experience******
 ************************************
 '''
+
+if __name__ == "__main__":
+    mainRun()
+    getAllValues(data)
