@@ -46,12 +46,12 @@ def calculateValuesForEachTool(data):
                 else:
                     calculateFreq[x][z] += 1
 
-# def mainRun():
-#     main(data)
-#     calculateNumbers(arrOfAllTools)
-#     calculateValuesForEachTool(newObj)
-#     with open('SORTED_DATA/data_by_tools.json', 'w') as outfile:
-#         json.dump(calculateFreq, outfile)
+def mainRun():
+    main(data)
+    calculateNumbers(arrOfAllTools)
+    calculateValuesForEachTool(newObj)
+    with open('SORTED_DATA/data_by_tools.json', 'w') as outfile:
+        json.dump(calculateFreq, outfile)
 
 
 '''
