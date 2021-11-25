@@ -46,12 +46,13 @@ def calculateValuesForEachTool(data):
                 else:
                     calculateFreq[x][z] += 1
 
-# def mainRun():
-#     main(data)
-#     calculateNumbers(arrOfAllTools)
-#     calculateValuesForEachTool(newObj)
-#     with open('SORTED_DATA/data_by_tools.json', 'w') as outfile:
-#         json.dump(calculateFreq, outfile)
+
+def mainRun():
+    main(data)
+    calculateNumbers(arrOfAllTools)
+    calculateValuesForEachTool(newObj)
+    with open('SORTED_DATA/data_by_tools.json', 'w') as outfile:
+        json.dump(calculateFreq, outfile)
 
 
 '''
@@ -87,13 +88,97 @@ def getAllValues(data):
                 expArr.append(newStr)
 
 
-getAllValues(data)
-
-with open('SORTED_DATA/experience_range.json', 'w') as outfile:
-    json.dump(expArr, outfile)
+# with open('SORTED_DATA/experience_range.json', 'w') as outfile:
+#     json.dump(expArr, outfile)
 
 '''
 ************************************
-**********Calculate experience******
+**********End Calculate experience******
 ************************************
 '''
+
+
+'''
+**************************************************
+**********Calculate JS as main language data******
+**************************************************
+'''
+
+largestNumber = 0
+lowestNumber = 0
+
+
+def calculate_highest_and_lowest_score_for_js_as_main_langauge(data):
+    global largestNumber, lowestNumber
+    for x in data:
+        if 'opinions' in x:
+            if 'would_like_js_to_be_main_lang' in x['opinions'] and x['opinions']['would_like_js_to_be_main_lang'] > largestNumber:
+                largestNumber = x['opinions']['would_like_js_to_be_main_lang']
+            if 'would_like_js_to_be_main_lang' in x['opinions'] and x['opinions']['would_like_js_to_be_main_lang'] < lowestNumber:
+                lowestNumber = x['opinions']['would_like_js_to_be_main_lang']
+
+
+scoreDict = {
+    "definitely no": 0,
+    "no, not really": 0,
+    "yeah, why not?": 0,
+    "definitely yes": 0
+}
+
+
+def calculate_js_as_main_language_score(data, largestNumber, lowestNumber):
+    global scoreDict
+    for i in data:
+        if 'opinions' in i:
+            if 'would_like_js_to_be_main_lang' in i['opinions']:
+                # full
+                if i['opinions']['would_like_js_to_be_main_lang'] == largestNumber:
+                    scoreDict['definitely yes'] += 1
+                # three fourth
+                elif i['opinions']['would_like_js_to_be_main_lang'] == (largestNumber * (3 / 4)):
+                    scoreDict['yeah, why not?'] += 1
+                # half
+                elif i['opinions']['would_like_js_to_be_main_lang'] == (largestNumber / 2):
+                    scoreDict['no, not really'] += 1
+                # one fourth
+                elif i['opinions']['would_like_js_to_be_main_lang'] == (largestNumber / 4) or i['opinions']['would_like_js_to_be_main_lang'] == lowestNumber:
+                    scoreDict['definitely no'] += 1
+                else:
+                    "something not right in the logic"
+
+
+arrOfYears = []
+
+
+def getAllYears(data):
+    global arrOfYears
+    for x in data:
+        if 'year' in x:
+            if x['year'] not in arrOfYears:
+                arrOfYears.append(x['year'])
+
+
+allDocsByYear = {}
+def get_docs_by_years(data,arrOfYears):
+    global allDocsByYear
+    for y in arrOfYears:
+        for x in data:
+            if 'year' in x: 
+                if x['year'] == y:
+                    if y in allDocsByYear:
+                        allDocsByYear[y].append(x)
+                    else:
+                        allDocsByYear[y] = [x]
+
+
+if __name__ == "__main__":
+    get_docs_by_years(data,arrOfYears)
+    # getAllYears(data)
+    # print(arrOfYears)
+    # mainRun()
+    # getAllValues(data)
+    # calculate_highest_and_lowest_score_for_js_as_main_langauge(data)
+    # calculate_js_as_main_language_score(data, largestNumber, lowestNumber)
+
+    with open('SORTED_DATA/docs_by_year.json', 'w') as outfile:
+     	json.dump(allDocsByYear, outfile)
