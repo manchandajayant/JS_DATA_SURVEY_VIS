@@ -51,7 +51,7 @@ def mainRun():
     main(data)
     calculateNumbers(arrOfAllTools)
     calculateValuesForEachTool(newObj)
-    with open('SORTED_DATA/data_by_tools.json', 'w') as outfile:
+    with open('server/SORTED_DATA/data_by_tools.json', 'w') as outfile:
         json.dump(calculateFreq, outfile)
 
 
@@ -88,7 +88,7 @@ def getAllValues(data):
                 expArr.append(newStr)
 
 
-# with open('SORTED_DATA/experience_range.json', 'w') as outfile:
+# with open('server/SORTED_DATA/experience_range.json', 'w') as outfile:
 #     json.dump(expArr, outfile)
 
 '''
@@ -180,5 +180,5 @@ if __name__ == "__main__":
     # calculate_highest_and_lowest_score_for_js_as_main_langauge(data)
     # calculate_js_as_main_language_score(data, largestNumber, lowestNumber)
 
-    # with open('SORTED_DATA/docs_by_year.json', 'w') as outfile:
+    # with open('server/SORTED_DATA/docs_by_year.json', 'w') as outfile:
     #  	json.dump(allDocsByYear, outfile)
