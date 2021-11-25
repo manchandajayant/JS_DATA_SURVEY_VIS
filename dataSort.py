@@ -180,5 +180,5 @@ if __name__ == "__main__":
     # calculate_highest_and_lowest_score_for_js_as_main_langauge(data)
     # calculate_js_as_main_language_score(data, largestNumber, lowestNumber)
 
-    with open('SORTED_DATA/docs_by_year.json', 'w') as outfile:
-     	json.dump(allDocsByYear, outfile)
+    # with open('SORTED_DATA/docs_by_year.json', 'w') as outfile:
+    #  	json.dump(allDocsByYear, outfile)
