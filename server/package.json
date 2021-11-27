@@ -4,15 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "serve": "browserify ./src/main.js -p esmify > ./public/bundle.js && nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "browsify": "^0.0.4",
+    "d3": "^7.1.1",
+    "esmify": "^2.1.1",
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "browserify": "^17.0.0",
     "nodemon": "^2.0.15"
   }
 }

@@ -3,6 +3,8 @@ const app = express();
 const path = require("path");
 const fs = require("fs");
 
+
+console.log("server running")
 app.get("/", (req, res) => {
 	res.send("home");
 });
