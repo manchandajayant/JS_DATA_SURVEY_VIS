@@ -12,7 +12,7 @@ data = json.load(input_file)
 arrOfAllTools = []
 
 
-def main(data):
+def sort_data(data):
     for i in data:
         if 'tools' in i:
             b = list(i['tools'].keys())
@@ -23,7 +23,7 @@ def main(data):
 newObj = {}
 
 
-def calculateNumbers(data):
+def calculate_numbers(data):
     for x in data:
         for y, z in x.items():
             if y in newObj:
@@ -35,7 +35,7 @@ def calculateNumbers(data):
 calculateFreq = {}
 
 
-def calculateValuesForEachTool(data):
+def calculate_values_for_each_tool(data):
     for x, y in data.items():
         for z in y:
             if x not in calculateFreq:
@@ -47,10 +47,10 @@ def calculateValuesForEachTool(data):
                     calculateFreq[x][z] += 1
 
 
-def mainRun():
-    main(data)
-    calculateNumbers(arrOfAllTools)
-    calculateValuesForEachTool(newObj)
+def sort_data_and_calculate_by_tool():
+    sort_data(data)
+    calculate_numbers(arrOfAllTools)
+    calculate_values_for_each_tool(newObj)
     with open('server/SORTED_DATA/data_by_tools.json', 'w') as outfile:
         json.dump(calculateFreq, outfile)
 
@@ -61,6 +61,7 @@ def mainRun():
 ************************************
 '''
 
+####################################################################################
 
 '''
 ************************************
@@ -69,9 +70,7 @@ def mainRun():
 '''
 
 expArr = []
-
-
-def getAllValues(data):
+def get_all_values_for_experience(data):
     for i in data:
         if 'years_of_experience' in i['user_info']:
             if i['user_info']['years_of_experience'] == 'range_less_than_1':
@@ -97,6 +96,7 @@ def getAllValues(data):
 ************************************
 '''
 
+####################################################################################
 
 '''
 **************************************************
@@ -106,8 +106,6 @@ def getAllValues(data):
 
 largestNumber = 0
 lowestNumber = 0
-
-
 def calculate_highest_and_lowest_score_for_js_as_main_langauge(data):
     global largestNumber, lowestNumber
     for x in data:
@@ -118,12 +116,12 @@ def calculate_highest_and_lowest_score_for_js_as_main_langauge(data):
                 lowestNumber = x['opinions']['would_like_js_to_be_main_lang']
 
 
-scoreDict = {
-    "definitely no": 0,
-    "no, not really": 0,
-    "yeah, why not?": 0,
-    "definitely yes": 0
-}
+scoreDict = [
+   { "definitely no": 0},
+   { "no, not really": 0},
+   { "yeah, why not?": 0},
+   { "definitely yes": 0}
+]
 
 
 def calculate_js_as_main_language_score(data, largestNumber, lowestNumber):
@@ -133,24 +131,35 @@ def calculate_js_as_main_language_score(data, largestNumber, lowestNumber):
             if 'would_like_js_to_be_main_lang' in i['opinions']:
                 # full
                 if i['opinions']['would_like_js_to_be_main_lang'] == largestNumber:
-                    scoreDict['definitely yes'] += 1
+                    scoreDict[3]['definitely yes'] += 1
                 # three fourth
                 elif i['opinions']['would_like_js_to_be_main_lang'] == (largestNumber * (3 / 4)):
-                    scoreDict['yeah, why not?'] += 1
+                    scoreDict[2]['yeah, why not?'] += 1
                 # half
                 elif i['opinions']['would_like_js_to_be_main_lang'] == (largestNumber / 2):
-                    scoreDict['no, not really'] += 1
+                    scoreDict[1]['no, not really'] += 1
                 # one fourth
                 elif i['opinions']['would_like_js_to_be_main_lang'] == (largestNumber / 4) or i['opinions']['would_like_js_to_be_main_lang'] == lowestNumber:
-                    scoreDict['definitely no'] += 1
+                    scoreDict[0]['definitely no'] += 1
                 else:
                     "something not right in the logic"
 
 
+'''
+**************************************************
+**********End Calculate JS as main language data**
+**************************************************
+'''
+####################################################################################
+
+'''
+**************************************************
+**********Calculate docs by year******
+**************************************************
+'''
+
 arrOfYears = []
-
-
-def getAllYears(data):
+def get_all_years(data):
     global arrOfYears
     for x in data:
         if 'year' in x:
@@ -171,14 +180,32 @@ def get_docs_by_years(data,arrOfYears):
                         allDocsByYear[y] = [x]
 
 
-if __name__ == "__main__":
-    get_docs_by_years(data,arrOfYears)
-    # getAllYears(data)
-    # print(arrOfYears)
-    # mainRun()
-    # getAllValues(data)
-    # calculate_highest_and_lowest_score_for_js_as_main_langauge(data)
-    # calculate_js_as_main_language_score(data, largestNumber, lowestNumber)
+'''
+**************************************************
+**********End Calculate docs by year**************
+**************************************************
+'''
+####################################################################################
 
-    # with open('server/SORTED_DATA/docs_by_year.json', 'w') as outfile:
-    #  	json.dump(allDocsByYear, outfile)
+if __name__ == "__main__":
+    # get data for each tool
+    sort_data_and_calculate_by_tool()
+    with open('server/SORTED_DATA/data_by_tools.json', 'w') as outfile:
+        json.dump(scoreDict, outfile)
+
+    # experience of users 
+    get_all_values_for_experience(data)
+    with open('server/SORTED_DATA/experience_range.json', 'w') as outfile:
+     	json.dump(scoreDict, outfile)
+
+    # calculate language score or js as main language
+    calculate_highest_and_lowest_score_for_js_as_main_langauge(data)
+    calculate_js_as_main_language_score(data, largestNumber, lowestNumber)
+    with open('server/SORTED_DATA/js_as_main_language.json', 'w') as outfile:
+     	json.dump(scoreDict, outfile)
+
+    # Get docs by year
+    get_all_years(data)
+    get_docs_by_years(data,arrOfYears)
+    with open('server/SORTED_DATA/all_docs_by_year.json', 'w') as outfile:
+     	json.dump(scoreDict, outfile)
