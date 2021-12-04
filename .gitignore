@@ -2,3 +2,5 @@ SORTED_DATA/
 DATA/
 server/node_modules
 server/package-lock.json
+Front_end/node_modules
+Front_end/package-lock.json
