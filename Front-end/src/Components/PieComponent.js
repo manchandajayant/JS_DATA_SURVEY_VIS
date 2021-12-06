@@ -33,9 +33,13 @@ export default function PieChart() {
 				.range(["#184e77", "#1a759f", "#34a0a4", "#76c893"]);
 
 			// Compute the position of each group on the pie:
-			const pie = d3.pie().value(function (d) {
-				return Object.values(d);
-			});
+			const pie = d3
+				.pie()
+				.startAngle(1.1 * Math.PI)
+				.endAngle(3.1 * Math.PI)
+				.value(function (d) {
+					return Object.values(d);
+				});
 
 			const data_ready = pie(data);
 
@@ -60,21 +64,40 @@ export default function PieChart() {
 				.style("font-size", "10px")
 				.style("pointer-events", "none");
 
+			const arc = d3
+				.arc()
+				.innerRadius(radius - 30)
+				.outerRadius(radius);
+
 			// Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-			svg.selectAll("path")
+			var diagram = svg
+				.selectAll("path")
 				.data(data_ready)
 				.enter()
-				.append("path")
-				.attr(
-					"d",
-					d3
-						.arc()
-						.innerRadius(radius - 30)
-						.outerRadius(radius)
-				)
+				.append("path");
+
+			// Transition and delay to create animation
+			diagram
+				.transition()
+				.delay(function (d, i) {
+					return i * 50;
+				})
+				.duration(350)
+				.attrTween("d", function (d) {
+					var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
+					return function (t) {
+						d.endAngle = i(t);
+						return arc(d);
+					};
+				})
 				.attr("fill", function (d) {
 					return color(Object.keys(d.data)[0]);
 				})
+				.attr("stroke", "none")
+				.style("stroke-width", "2px")
+				.style("opacity", 0.7);
+
+			diagram
 				.on("mouseover", (e, d) => {
 					toolDiv
 						.style("visibility", "visible")
@@ -96,10 +119,7 @@ export default function PieChart() {
 				})
 				.on("mouseout", () => {
 					toolDiv.style("visibility", "hidden");
-				})
-				.attr("stroke", "none")
-				.style("stroke-width", "2px")
-				.style("opacity", 0.7);
+				});
 		}
 
 		fetchTest();
