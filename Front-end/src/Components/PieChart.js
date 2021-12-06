@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
+
 export default function PieChart() {
 	const ref = useRef(null);
 	useEffect(() => {
@@ -7,11 +8,9 @@ export default function PieChart() {
 			const res = await fetch("http://localhost:4000/jsMainLangauge");
 			const data = await res.json();
 			// set the dimensions and margins of the graph
-			// set the dimensions and margins of the graph
 			const width = 450;
 			const height = 450;
 			const margin = 40;
-
 			// The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
 			const radius = Math.min(width, height) / 2 - margin;
 
@@ -26,10 +25,12 @@ export default function PieChart() {
 					"transform",
 					"translate(" + width / 2 + "," + height / 2 + ")"
 				);
+
+			// array of colours on the pie chart
 			const color = d3
 				.scaleOrdinal()
 				.domain(data)
-				.range(["#FF6361", "#BC5090", "#58508D", "#003F5C"]);
+				.range(["#184e77", "#1a759f", "#34a0a4", "#76c893"]);
 
 			// Compute the position of each group on the pie:
 			const pie = d3.pie().value(function (d) {
@@ -37,6 +38,27 @@ export default function PieChart() {
 			});
 
 			const data_ready = pie(data);
+
+			// calculate % of each piece of data
+			const totalValue = data.reduce((acc, curr) => {
+				return acc + Object.values(curr)[0];
+			}, 0);
+
+			//Tooltip
+			const toolDiv = d3
+				.select(ref.current)
+				.append("div")
+				.style("visibility", "hidden")
+				.style("overflow", "visible")
+				.style("position", "absolute")
+				.style("height", "60px")
+				.style("width", "100px")
+				.style("background-color", "#fff")
+				.style("border", "solid black 1px")
+				.style("border-radius", "7px")
+				.style("font-family", "Chivo, sans-serif")
+				.style("font-size", "10px")
+				.style("pointer-events", "none");
 
 			// Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
 			svg.selectAll("path")
@@ -47,11 +69,33 @@ export default function PieChart() {
 					"d",
 					d3
 						.arc()
-						.innerRadius(radius - 80)
+						.innerRadius(radius - 30)
 						.outerRadius(radius)
 				)
 				.attr("fill", function (d) {
 					return color(Object.keys(d.data)[0]);
+				})
+				.on("mouseover", (e, d) => {
+					toolDiv
+						.style("visibility", "visible")
+						.html(
+							`<p style="margin:0;padding:10px 0 0px 10px;font-weight: 900;font-size:12px">${
+								Object.keys(d.data)[0]
+							}</p>` +
+								"<br/>" +
+								`<p style="margin:0;padding:0px 0 2px 10px">${Math.round(
+									(Object.values(d.data)[0] / totalValue) *
+										100
+								)}%</p>`
+						);
+				})
+				.on("mousemove", (e) => {
+					toolDiv
+						.style("top", e.pageY - 50 + "px")
+						.style("left", e.pageX - 50 + "px");
+				})
+				.on("mouseout", () => {
+					toolDiv.style("visibility", "hidden");
 				})
 				.attr("stroke", "none")
 				.style("stroke-width", "2px")
@@ -60,5 +104,5 @@ export default function PieChart() {
 
 		fetchTest();
 	}, []);
-	return <div ref={ref}>Pie Chart</div>;
+	return <div ref={ref}></div>;
 }
