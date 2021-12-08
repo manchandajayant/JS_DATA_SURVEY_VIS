@@ -33,12 +33,12 @@ The data is available on these endpoints :
 
 ```json
   {
-    tool: {
-    "not_interested": int,
-    "would_use": int,
-    "would_not_use": int,
-    "never_heard": int,
-    "interested": int
+    "tool": {
+    "not_interested": "int",
+    "would_use": "int",
+    "would_not_use": "int",
+    "never_heard": "int",
+    "interested": "int"
    }
   }
 ```
@@ -47,10 +47,10 @@ The data is available on these endpoints :
 
 ```json
 [
-	{ "definitely no": int },
-	{ "no, not really": int },
-	{ "yeah, why not?": int },
-	{ "definitely yes": int }
+	{ "definitely no": "int" },
+	{ "no, not really": "int" },
+	{ "yeah, why not?": "int" },
+	{ "definitely yes": "int" }
 ]
 ```
 
@@ -248,7 +248,7 @@ The data is available on these endpoints :
             },
             "year": 2016
         },
-        ....
+        "...."
     ]
 }
 ```
