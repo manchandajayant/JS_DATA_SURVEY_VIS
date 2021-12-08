@@ -7,6 +7,7 @@ export default function PieChart() {
 	const [dataReady, setDataReady] = useState(false);
 	const [data, setData] = useState([]);
 	const [loading, setloading] = useState(false);
+	const [key, setKey] = useState([]);
 	const [error, seterror] = useState(false);
 	const ref = useRef(null);
 
@@ -96,7 +97,7 @@ export default function PieChart() {
 				.outerRadius(radius);
 
 			// Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-			var diagram = svg
+			const diagram = svg
 				.selectAll("path")
 				.data(data_ready)
 				.enter()
@@ -117,6 +118,13 @@ export default function PieChart() {
 					};
 				})
 				.attr("fill", function (d) {
+					setKey((key) => [
+						...key,
+						{
+							key: Object.keys(d.data)[0],
+							color: color(Object.keys(d.data)[0]),
+						},
+					]);
 					return color(Object.keys(d.data)[0]);
 				})
 				.attr("stroke", "none")
@@ -154,7 +162,27 @@ export default function PieChart() {
 			<p className="pie-heading p-3 pb-0 h-6">
 				People Who would like JS to be their main language
 			</p>
-			{dataReady && <div ref={ref}></div>}
+			{dataReady && (
+				<div>
+					<div id="chart-key">
+						{key.map((el, index) => {
+							return (
+								<div
+									key={index}
+									className="d-flex justify-content-end"
+								>
+									<p className="pe-2 m-0">{el.key}</p>
+									<span
+										id="circle"
+										style={{ background: el.color }}
+									></span>
+								</div>
+							);
+						})}
+					</div>
+					<div ref={ref}></div>
+				</div>
+			)}
 			<ToastContainer />
 		</div>
 	);

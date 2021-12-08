@@ -32,7 +32,7 @@ def calculate_numbers(data):
                 newObj[y] = [z['experience']]
 
 
-calculateFreq = {}
+calculateFreq = []
 
 
 def calculate_values_for_each_tool(data):
@@ -201,16 +201,16 @@ if __name__ == "__main__":
     # experience of users
     get_all_values_for_experience(data)
     with open('server/SORTED_DATA/experience_range.json', 'w') as outfile:
-     	json.dump(scoreDict, outfile)
+        json.dump(scoreDict, outfile)
 
     # calculate language score or js as main language
     calculate_highest_and_lowest_score_for_js_as_main_langauge(data)
     calculate_js_as_main_language_score(data, largestNumber, lowestNumber)
     with open('server/SORTED_DATA/js_as_main_language.json', 'w') as outfile:
-     	json.dump(scoreDict, outfile)
+        json.dump(scoreDict, outfile)
 
     # Get docs by year
     get_all_years(data)
     get_docs_by_years(data, arrOfYears)
     with open('server/SORTED_DATA/all_docs_by_year.json', 'w') as outfile:
-     	json.dump(scoreDict, outfile)
+        json.dump(scoreDict, outfile)
