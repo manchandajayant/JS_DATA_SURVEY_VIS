@@ -14,26 +14,24 @@ Unzip SORTED_DATA in [server](https://github.com/manchandajayant/JS_DATA_SURVEY_
 Install node packages in server :
 ```
 npm install or yarn install
-
 ```
 To run the server :
 ```
 npm run serve
-
 ```
 
 Install node packages in Front_end:
 ```
 npm install or yarn install
-
 ```
 
 The data is available on these endpoints : 
+```
 - /dataByTools
 - /jsmainlangauge
 - /allDocsByYear
 - /allDocsByYear/:id
-
+```
 
 Schema of the data :
 
@@ -227,7 +225,4 @@ Schema of the data :
     },
     "tools_others": {}
   }
-
 ```
-
-
