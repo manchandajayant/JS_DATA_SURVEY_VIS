@@ -1,4 +1,4 @@
-# Visualisation of data from [state of js](https://2020.stateofjs.com/en-US/) survey
+# Data sort and visualisation from [state of js](https://2020.stateofjs.com/en-US/) survey
 
 Clone the Repository 
 
