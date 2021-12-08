@@ -70,6 +70,8 @@ def sort_data_and_calculate_by_tool():
 '''
 
 expArr = []
+
+
 def get_all_values_for_experience(data):
     for i in data:
         if 'years_of_experience' in i['user_info']:
@@ -87,9 +89,6 @@ def get_all_values_for_experience(data):
                 expArr.append(newStr)
 
 
-# with open('server/SORTED_DATA/experience_range.json', 'w') as outfile:
-#     json.dump(expArr, outfile)
-
 '''
 ************************************
 **********End Calculate experience******
@@ -106,6 +105,8 @@ def get_all_values_for_experience(data):
 
 largestNumber = 0
 lowestNumber = 0
+
+
 def calculate_highest_and_lowest_score_for_js_as_main_langauge(data):
     global largestNumber, lowestNumber
     for x in data:
@@ -117,10 +118,10 @@ def calculate_highest_and_lowest_score_for_js_as_main_langauge(data):
 
 
 scoreDict = [
-   { "definitely no": 0},
-   { "no, not really": 0},
-   { "yeah, why not?": 0},
-   { "definitely yes": 0}
+    {"definitely no": 0},
+    {"no, not really": 0},
+    {"yeah, why not?": 0},
+    {"definitely yes": 0}
 ]
 
 
@@ -159,6 +160,8 @@ def calculate_js_as_main_language_score(data, largestNumber, lowestNumber):
 '''
 
 arrOfYears = []
+
+
 def get_all_years(data):
     global arrOfYears
     for x in data:
@@ -168,11 +171,13 @@ def get_all_years(data):
 
 
 allDocsByYear = {}
-def get_docs_by_years(data,arrOfYears):
+
+
+def get_docs_by_years(data, arrOfYears):
     global allDocsByYear
     for y in arrOfYears:
         for x in data:
-            if 'year' in x: 
+            if 'year' in x:
                 if x['year'] == y:
                     if y in allDocsByYear:
                         allDocsByYear[y].append(x)
@@ -193,7 +198,7 @@ if __name__ == "__main__":
     with open('server/SORTED_DATA/data_by_tools.json', 'w') as outfile:
         json.dump(scoreDict, outfile)
 
-    # experience of users 
+    # experience of users
     get_all_values_for_experience(data)
     with open('server/SORTED_DATA/experience_range.json', 'w') as outfile:
      	json.dump(scoreDict, outfile)
@@ -206,6 +211,6 @@ if __name__ == "__main__":
 
     # Get docs by year
     get_all_years(data)
-    get_docs_by_years(data,arrOfYears)
+    get_docs_by_years(data, arrOfYears)
     with open('server/SORTED_DATA/all_docs_by_year.json', 'w') as outfile:
      	json.dump(scoreDict, outfile)

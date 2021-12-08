@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
 	res.send("home");
 });
 
-app.get("/jsMainLangauge", (req, res) => {
+app.get("/jsmainlangauge", (req, res) => {
 	fs.readFile(
 		__dirname + "/SORTED_DATA/js_as_main_language.json",
 		(err, json) => {

@@ -1,12 +1,38 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import * as d3 from "d3";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function PieChart() {
+	const [dataReady, setDataReady] = useState(false);
+	const [data, setData] = useState([]);
+	const [loading, setloading] = useState(false);
+	const [error, seterror] = useState(false);
 	const ref = useRef(null);
+
+	const fetchData = useCallback(async () => {
+		try {
+			setloading(true);
+			const res = await fetch("http://localhost:4000/jsmainlangauge");
+			const result = await res.json();
+			if (res.status === 200) {
+				setData(result);
+				setDataReady(true);
+				setloading(false);
+			}
+		} catch (e) {
+			setloading(false);
+			seterror(true);
+			toast("Something went wrong");
+		}
+	}, []);
+
 	useEffect(() => {
-		async function fetchTest() {
-			const res = await fetch("http://localhost:4000/jsMainLangauge");
-			const data = await res.json();
+		fetchData();
+	}, [fetchData]);
+
+	useEffect(() => {
+		if (dataReady) {
 			// set the dimensions and margins of the graph
 			const width = 450;
 			const height = 450;
@@ -57,7 +83,7 @@ export default function PieChart() {
 				.style("position", "absolute")
 				.style("height", "60px")
 				.style("width", "100px")
-				.style("background-color", "#fff")
+				.style("background-color", "#efefef")
 				.style("border", "solid black 1px")
 				.style("border-radius", "7px")
 				.style("font-family", "Chivo, sans-serif")
@@ -121,8 +147,15 @@ export default function PieChart() {
 					toolDiv.style("visibility", "hidden");
 				});
 		}
+	}, [dataReady]);
 
-		fetchTest();
-	}, []);
-	return <div ref={ref}></div>;
+	return (
+		<div className="container-fluid shadow-lg bg-white rounded w-50 ms-3 mt-5 m-0 rounded">
+			<p className="pie-heading p-3 pb-0 h-6">
+				People Who would like JS to be their main language
+			</p>
+			{dataReady && <div ref={ref}></div>}
+			<ToastContainer />
+		</div>
+	);
 }

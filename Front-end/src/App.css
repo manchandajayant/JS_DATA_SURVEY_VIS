@@ -6,3 +6,12 @@ body{
 .text-center{
     font-family: Chivo, sans-serif;
 }
+
+.pie-heading{
+    font-family: Chivo, sans-serif;
+    text-align: center;
+}
+
+.w-50{
+    width: 33.5%!important;
+}
