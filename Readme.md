@@ -19,7 +19,7 @@ npm install or yarn install
 To run the server :
 
 ```
-npm run serve
+npm run serve or yarn serve
 ```
 
 Install node packages in Front_end:
