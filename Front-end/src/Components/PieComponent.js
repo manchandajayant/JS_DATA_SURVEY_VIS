@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function PieChart() {
 	const [dataReady, setDataReady] = useState(false);
 	const [data, setData] = useState([]);
+	const [labels, setlabels] = useState([])
 	const [loading, setloading] = useState(false);
 	const [key, setKey] = useState([]);
 	const [error, seterror] = useState(false);
@@ -118,7 +119,7 @@ export default function PieChart() {
 					};
 				})
 				.attr("fill", function (d) {
-					setKey((key) => [
+					setlabels((key) => [
 						...key,
 						{
 							key: Object.keys(d.data)[0],
@@ -165,15 +166,16 @@ export default function PieChart() {
 			{dataReady && (
 				<div>
 					<div id="chart-key">
-						{key.map((el, index) => {
+						{labels.map((el, index) => {
 							return (
 								<div
 									key={index}
 									className="d-flex justify-content-end"
 								>
-									<p className="pe-2 m-0">{el.key}</p>
-									<span
+									<p className="pe-2 m-0" id="labels-pie-chart">{el.key}</p>
+									<span	
 										id="circle"
+										className="m-2"
 										style={{ background: el.color }}
 									></span>
 								</div>

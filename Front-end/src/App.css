@@ -15,3 +15,17 @@ body{
 .w-50{
     width: 33.5%!important;
 }
+
+#circle {
+    height: 15px;
+    width: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+
+#labels-pie-chart{
+    font-family: Chivo, sans-serif;
+    padding-top: 3px;
+}
