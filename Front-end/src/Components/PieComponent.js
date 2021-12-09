@@ -80,17 +80,7 @@ export default function PieChart() {
 			const toolDiv = d3
 				.select(ref.current)
 				.append("div")
-				.style("visibility", "hidden")
-				.style("overflow", "visible")
-				.style("position", "absolute")
-				.style("height", "60px")
-				.style("width", "100px")
-				.style("background-color", "#efefef")
-				.style("border", "solid black 1px")
-				.style("border-radius", "7px")
-				.style("font-family", "Chivo, sans-serif")
-				.style("font-size", "10px")
-				.style("pointer-events", "none");
+				.attr('class','tooldiv')
 
 			const arc = d3
 				.arc()

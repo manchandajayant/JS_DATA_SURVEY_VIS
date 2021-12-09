@@ -29,3 +29,17 @@ body{
     font-family: Chivo, sans-serif;
     padding-top: 3px;
 }
+
+.tooldiv{
+    visibility:hidden;
+    overflow:visible;
+    position:absolute;
+    height:60px;
+    width:100px;
+    background-color:#efefef;
+    border:solid black 1px;
+    border-radius:7px;
+    font-family:Chivo, sans-serif;
+    font-size:10px;
+    pointer-events:none;;
+}
