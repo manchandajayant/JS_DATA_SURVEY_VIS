@@ -5,6 +5,7 @@ Clone the Repository
 ```
 git clone https://github.com/manchandajayant/JS_DATA_SURVEY_VIS.git
 ```
+To collaborate, make a new branch or push changes to the develop branch
 
 Unzip state_of_js_2016 in [DATA](https://github.com/manchandajayant/JS_DATA_SURVEY_VIS/tree/master/DATA)
 
