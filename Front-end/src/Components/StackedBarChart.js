@@ -55,7 +55,7 @@ const StackedBarChart = () => {
 
 	useEffect(() => {
 		if (sortedData.length) {
-			console.log("ever")
+			console.log("ever");
 			makeBarChart();
 		}
 	}, [sortedData]);
@@ -129,11 +129,16 @@ const StackedBarChart = () => {
 				})
 			);
 
+			const toolDiv = d3
+				.select(ref.current)
+				.append("div")
+				.attr("class", "tooldiv");
+
 			const defs = svg.append("defs");
 			const bgGradient = defs
 				.append("linearGradient")
 				.attr("id", "bg-gradient")
-				.attr("gradientTransform", "rotate(145)");
+				.attr("gradientTransform", "rotate(105)");
 			bgGradient
 				.append("stop")
 				.attr("stop-color", "#1a759f")
@@ -171,6 +176,26 @@ const StackedBarChart = () => {
 				.style("fill", "url(#bg-gradient)")
 				.delay(function (d, i) {
 					return i * 100;
+				});
+
+			svg.selectAll("rect")
+				.on("mouseover", (e, d) => {
+					toolDiv.style("visibility", "visible").html(
+						`<p style="margin:0;padding:10px 0 0px 10px;font-weight: 900;font-size:12px">
+							${Object.keys(d)}
+						</p>
+						<p style="margin:0;padding:10px 0 0px 10px;font-weight: 900;font-size:12px">
+						${Object.values(d)}
+					</p>`
+					);
+				})
+				.on("mousemove", (e) => {
+					toolDiv
+						.style("top", e.pageY - 50 + "px")
+						.style("left", e.pageX - 50 + "px");
+				})
+				.on("mouseout", () => {
+					toolDiv.style("visibility", "hidden");
 				});
 		}
 		setupdated(false);
