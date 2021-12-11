@@ -149,7 +149,7 @@ export default function PieChart() {
 	}, [dataReady]);
 
 	return (
-		<div className="container-fluid shadow-lg bg-white rounded w-50 ms-3 mt-5 m-0 rounded">
+		<div className="container-fluid shadow-lg bg-white rounded w-50 ms-3 mt-5 m-0 rounded" id="pie-chart">
 			<p className="pie-heading p-3 pb-0 h-6">
 				People Who would like JS to be their main language
 			</p>

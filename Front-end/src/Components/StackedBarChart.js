@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import * as d3 from "d3";
-import { max } from "d3";
+import Dropdown from "./Dropdown";
+
 const StackedBarChart = () => {
 	const ref = useRef(null);
 	const [rawData, setrawData] = useState({});
 	const [requestFullfilled, setrequestFullfilled] = useState(false);
 	const [loading, setloading] = useState(false);
+	const [sortedData, setsortedData] = useState([]);
+	const [updated, setupdated] = useState(false);
+	const [selected, setSelected] = useState("");
 
 	const fetchData = useCallback(async () => {
 		try {
@@ -16,6 +20,7 @@ const StackedBarChart = () => {
 				setloading(false);
 				setrawData(adata);
 				setrequestFullfilled(true);
+				setSelected(Object.keys(adata)[0]);
 			}
 		} catch (e) {
 			setloading(false);
@@ -27,37 +32,68 @@ const StackedBarChart = () => {
 		fetchData();
 	}, [fetchData]);
 
+	const clickTool = (tool) => {
+		setSelected(tool);
+		setupdated(true);
+	};
+
 	useEffect(() => {
 		if (requestFullfilled) {
 			var arrayOfData = Object.entries(rawData).map((e) => ({
 				[e[0]]: e[1],
 			}));
+			setsortedData(
+				arrayOfData.map((el) => {
+					return {
+						tool: Object.keys(el)[0],
+						...Object.values(el)[0],
+					};
+				})
+			);
+		}
+	}, [requestFullfilled]);
 
-			arrayOfData = arrayOfData.filter((el, i) => {
-				if (i < 18) {
-					return el;
+	useEffect(() => {
+		if (sortedData.length) {
+			console.log("ever")
+			makeBarChart();
+		}
+	}, [sortedData]);
+
+	useEffect(() => {
+		if (updated) makeBarChart();
+	}, [updated]);
+
+	const makeBarChart = () => {
+		if (updated) {
+			d3.select(".svg").remove();
+		}
+		var selectedToolData = sortedData.filter((el) => el.tool === selected);
+
+		function dataProcessingForD3(selectedToolData) {
+			var arr = [];
+			for (const x in selectedToolData[0]) {
+				if (x !== "tool") {
+					arr.push({
+						[x]: selectedToolData[0][x],
+					});
 				}
-			});
-
-			var keys = [];
-			for (var x in Object.values(arrayOfData[0])[0]) {
-				keys.push(x);
 			}
-			var sortedData = arrayOfData.map((el) => {
-				return {
-					tool: Object.keys(el)[0],
-					...Object.values(el)[0],
-				};
-			});
-			
+			return arr;
+		}
+
+		let d3Data = dataProcessingForD3(selectedToolData);
+
+		if (d3Data.length) {
 			var margin = { top: 20, right: 160, bottom: 35, left: 30 };
 
-			var width = 1260 - margin.left - margin.right,
+			var width = 760 - margin.left - margin.right,
 				height = 500 - margin.top - margin.bottom;
 
 			var svg = d3
 				.select(ref.current)
 				.append("svg")
+				.attr("class", "svg")
 				.attr("width", width + margin.left + margin.right)
 				.attr("height", height + margin.top + margin.bottom)
 				.append("g")
@@ -66,104 +102,97 @@ const StackedBarChart = () => {
 					"translate(" + margin.left + "," + margin.top + ")"
 				);
 
-			// Start the stacked bar chart
-			var stack = d3
-				.stack()
-				.keys(keys)
-				.order(d3.stackOrderNone)
-				.offset(d3.stackOffsetNone);
+			svg.selectAll("rect").remove();
+			var x = d3.scaleBand().range([0, width]).padding(0.1);
+			var y = d3.scaleLinear().range([height, 0]);
 
-			var series = stack(sortedData);
-
-			var x = d3
-				.scaleBand()
-				.domain(
-					series[0].map(function (d) {
-						return d.data.tool;
-					})
-				)
-				.range([0, width])
-				.padding([0.2]);
-
-			var maxValue = 0;
-
-			sortedData.forEach((el) => {
-				Object.values(el).forEach((m) => {
-					if (typeof m !== "string"){
-						if (m >= maxValue) {
-							maxValue = m
-						}
-					}
-				
-				});
-			});
-			
-			maxValue = parseInt((40 /100) * maxValue) + maxValue
-
-			
-			var y = d3.scaleLinear().domain([0, maxValue]).range([height, 0]);
+			x.domain(
+				d3Data.map(function (d) {
+					return Object.keys(d)[0];
+				})
+			);
+			y.domain([
+				0,
+				d3.max(d3Data, function (d) {
+					return Object.values(d)[0];
+				}),
+			]);
 
 			svg.append("g")
-				.attr("class", "y axis")
-				.call(
-					d3.axisLeft(y).tickFormat((d) => {
-						return d === 0 ? 0 : d / 1000 + "k";
-					})
-				);
-
-			svg.append("g")
-				.attr("class", "x axis")
 				.attr("transform", "translate(0," + height + ")")
-				.call(d3.axisBottom(x));
+				.call(d3.axisBottom(x))
+				.append("text");
 
-			var color = d3
-				.scaleOrdinal()
-				.domain([
-					"interested",
-					"never_heard",
-					"not_interested",
-					"would_not_use",
-					"would_use",
-				])
-				.range(["#52b69a","#76c893", "#99d98c", "#b5e48c", "#d9ed92"]);
+			svg.append("g").call(
+				d3.axisLeft(y).tickFormat((d) => {
+					return d === 0 ? 0 : d / 1000 + "k";
+				})
+			);
 
-			svg.append("g")
-				.selectAll("g")
-				// Enter in the stack data = loop key per key = group per group
-				.data(series)
-				.enter()
-				.append("g")
-				.attr("fill", function (d) {
-					return color(d.key);
-				})
-				.selectAll("rect")
-				// enter a second time = loop subgroup per subgroup to add all rectangles
-				.data(function (d) {
-					return d;
-				})
+			const defs = svg.append("defs");
+			const bgGradient = defs
+				.append("linearGradient")
+				.attr("id", "bg-gradient")
+				.attr("gradientTransform", "rotate(145)");
+			bgGradient
+				.append("stop")
+				.attr("stop-color", "#1a759f")
+				.attr("offset", "0%");
+			bgGradient
+				.append("stop")
+				.attr("stop-color", "#76c893")
+				.attr("offset", "100%");
+
+			svg.selectAll(".bar")
+				.data(d3Data)
 				.enter()
 				.append("rect")
+				.attr("class", "bar")
 				.attr("x", function (d) {
-					return x(d.data.tool);
+					return x(Object.keys(d)[0]);
 				})
+				.attr("width", x.bandwidth())
 				.attr("y", function (d) {
-					return y(d[1]);
+					return y(0);
 				})
 				.attr("height", function (d) {
-					return y(d[0]) - y(d[1]);
+					return height - y(0);
+				});
+
+			svg.selectAll("rect")
+				.transition()
+				.duration(800)
+				.attr("y", function (d) {
+					return y(Object.values(d)[0]);
 				})
-				.attr("width", x.bandwidth());
+				.attr("height", function (d) {
+					return height - y(Object.values(d)[0]);
+				})
+				.style("fill", "url(#bg-gradient)")
+				.delay(function (d, i) {
+					return i * 100;
+				});
 		}
-	}, [requestFullfilled]);
+		setupdated(false);
+	};
 
 	return (
-		<div className="container-fluid shadow-lg bg-white rounded w-60 ms-3 mt-5 m-0 rounded">
-			<p className="pie-heading p-3 pb-0 h-6">
-				People Who would like JS to be their main language
-			</p>
-			<div>
-				<div ref={ref} style={{overflow: 'scroll'}}></div>
-			</div>
+		<div
+			className="container-fluid shadow-lg bg-white rounded w-50 ms-3 mt-5 m-0 rounded"
+			id="bar-chart"
+		>
+			<p className="pie-heading p-3 pb-0 h-6">Preference By JS Tool</p>
+
+			{!loading && (
+				<div>
+					<Dropdown
+						selected={selected}
+						clickTool={clickTool}
+						data={sortedData}
+					/>
+					<div ref={ref}></div>
+				</div>
+			)}
 		</div>
 	);
 };

@@ -6,7 +6,7 @@ export default function App() {
 	return (
 		<div>
 			<h2 className="text-center">State of JS data visualisation</h2>
-			<div>
+			<div className="d-flex justify-content-evenly" >
 				<PieComponent />
 				<StackedBarChart />
 			</div>
