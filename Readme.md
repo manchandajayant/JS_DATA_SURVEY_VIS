@@ -7,6 +7,8 @@ git clone https://github.com/manchandajayant/JS_DATA_SURVEY_VIS.git
 ```
 To collaborate, make a new branch or push changes to the develop branch
 
+![Preview](https://github.com/manchandajayant/JS_DATA_SURVEY_VIS/blob/master/assets/preview.png)
+
 Unzip state_of_js_2016 in [DATA](https://github.com/manchandajayant/JS_DATA_SURVEY_VIS/tree/master/DATA)
 
 Unzip SORTED_DATA in [server](https://github.com/manchandajayant/JS_DATA_SURVEY_VIS/tree/master/server)
