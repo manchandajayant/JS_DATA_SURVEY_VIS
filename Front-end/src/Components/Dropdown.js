@@ -11,7 +11,7 @@ const Dropdown = ({ selected, clickTool, data }) => {
 					setIsActive(!isActive);
 				}}
 			>
-				{selected}
+				{selected.toUpperCase()}
 				<span className="fas fa-caret-down"></span>
 			</div>
 			{isActive && (
@@ -25,7 +25,7 @@ const Dropdown = ({ selected, clickTool, data }) => {
 							}}
 							className="dropdown-item"
 						>
-							{option.tool}
+							{option.tool === 'nofrontendframework' ? 'No Front End FrameWork'.toUpperCase():option.tool.toUpperCase()}
 						</div>
 					))}
 				</div>

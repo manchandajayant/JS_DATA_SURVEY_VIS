@@ -55,7 +55,6 @@ const StackedBarChart = () => {
 
 	useEffect(() => {
 		if (sortedData.length) {
-			console.log("ever");
 			makeBarChart();
 		}
 	}, [sortedData]);
@@ -83,7 +82,8 @@ const StackedBarChart = () => {
 		}
 
 		let d3Data = dataProcessingForD3(selectedToolData);
-
+		d3Data = d3Data.sort((a,b)=> (Object.keys(a) > Object.keys(b) ? 1 : -1))
+		
 		if (d3Data.length) {
 			var margin = { top: 20, right: 160, bottom: 35, left: 30 };
 
@@ -94,8 +94,13 @@ const StackedBarChart = () => {
 				.select(ref.current)
 				.append("svg")
 				.attr("class", "svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
+				.attr("width", "100%")
+				.attr("height", "100%")
+				.attr(
+					"viewBox",
+					"0 0 760 500"
+				)
+				.attr("preserveAspectRatio", "xMinYMin")
 				.append("g")
 				.attr(
 					"transform",
@@ -103,6 +108,7 @@ const StackedBarChart = () => {
 				);
 
 			svg.selectAll("rect").remove();
+
 			var x = d3.scaleBand().range([0, width]).padding(0.1);
 			var y = d3.scaleLinear().range([height, 0]);
 
@@ -182,10 +188,10 @@ const StackedBarChart = () => {
 				.on("mouseover", (e, d) => {
 					toolDiv.style("visibility", "visible").html(
 						`<p style="margin:0;padding:10px 0 0px 10px;font-weight: 900;font-size:12px">
-							${Object.keys(d)}
+						${Object.values(d)} 
 						</p>
-						<p style="margin:0;padding:10px 0 0px 10px;font-weight: 900;font-size:12px">
-						${Object.values(d)}
+						<p style="margin:0;padding:0px 0px 0px 10px;font-weight: 900;font-size:12px">
+						Participants
 					</p>`
 					);
 				})

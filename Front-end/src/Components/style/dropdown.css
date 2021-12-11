@@ -19,6 +19,7 @@
     position: relative;
   }
   .dropdown .dropdown-btn {
+    font-family:Chivo, sans-serif;
     padding: 15px 20px;
     background: #fff;
     box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
@@ -47,6 +48,7 @@
     padding: 10px;
     cursor: pointer;
     transition: all 0.2s;
+    font-family:Chivo, sans-serif;
   }
   .dropdown .dropdown-content .dropdown-item:hover {
     background: #f4f4f4;
