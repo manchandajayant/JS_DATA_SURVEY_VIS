@@ -90,6 +90,7 @@ const StackedBarChart = () => {
 			var width = 760 - margin.left - margin.right,
 				height = 500 - margin.top - margin.bottom;
 
+			// Define Svg responsive
 			var svg = d3
 				.select(ref.current)
 				.append("svg")
@@ -106,12 +107,15 @@ const StackedBarChart = () => {
 					"transform",
 					"translate(" + margin.left + "," + margin.top + ")"
 				);
-
+			
+			// Clear previous elements to update data
 			svg.selectAll("rect").remove();
-
+			
+			// Define x and y axis 
 			var x = d3.scaleBand().range([0, width]).padding(0.1);
 			var y = d3.scaleLinear().range([height, 0]);
-
+			
+			// Define data on x and y axis
 			x.domain(
 				d3Data.map(function (d) {
 					return Object.keys(d)[0];
@@ -124,6 +128,7 @@ const StackedBarChart = () => {
 				}),
 			]);
 
+			// Add X and Y axis to the svg
 			svg.append("g")
 				.attr("transform", "translate(0," + height + ")")
 				.call(d3.axisBottom(x))
@@ -135,11 +140,14 @@ const StackedBarChart = () => {
 				})
 			);
 
+			// Tooltip
 			const toolDiv = d3
 				.select(ref.current)
 				.append("div")
 				.attr("class", "tooldiv");
 
+			
+			// Color gradient for bars
 			const defs = svg.append("defs");
 			const bgGradient = defs
 				.append("linearGradient")
@@ -153,7 +161,8 @@ const StackedBarChart = () => {
 				.append("stop")
 				.attr("stop-color", "#76c893")
 				.attr("offset", "100%");
-
+			
+			// Create bars
 			svg.selectAll(".bar")
 				.data(d3Data)
 				.enter()
@@ -169,7 +178,8 @@ const StackedBarChart = () => {
 				.attr("height", function (d) {
 					return height - y(0);
 				});
-
+			
+			// Add animation to the bars on page load
 			svg.selectAll("rect")
 				.transition()
 				.duration(800)
@@ -183,7 +193,8 @@ const StackedBarChart = () => {
 				.delay(function (d, i) {
 					return i * 100;
 				});
-
+			
+			// Hover functions for tooltip
 			svg.selectAll("rect")
 				.on("mouseover", (e, d) => {
 					toolDiv.style("visibility", "visible").html(

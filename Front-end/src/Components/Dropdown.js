@@ -6,7 +6,7 @@ const Dropdown = ({ selected, clickTool, data }) => {
 	return (
 		<div className="dropdown d-flex justify-content-end">
 			<div
-				className="dropdown-btn"
+				className="btn btn-outline-dark" data-mdb-ripple-color="dark"
 				onClick={(e) => {
 					setIsActive(!isActive);
 				}}
