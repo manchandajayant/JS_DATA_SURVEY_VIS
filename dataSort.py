@@ -32,7 +32,7 @@ def calculate_numbers(data):
                 newObj[y] = [z['experience']]
 
 
-calculateFreq = []
+calculateFreq = {}
 
 
 def calculate_values_for_each_tool(data):
@@ -51,8 +51,6 @@ def sort_data_and_calculate_by_tool():
     sort_data(data)
     calculate_numbers(arrOfAllTools)
     calculate_values_for_each_tool(newObj)
-    with open('server/SORTED_DATA/data_by_tools.json', 'w') as outfile:
-        json.dump(calculateFreq, outfile)
 
 
 '''
@@ -77,16 +75,25 @@ def get_all_values_for_experience(data):
         if 'years_of_experience' in i['user_info']:
             if i['user_info']['years_of_experience'] == 'range_less_than_1':
                 s = i['user_info']['years_of_experience'].split('_')
-                less_than_str = '> ' + str(s[3])
+                less_than_str = '< ' + str(s[3])
                 expArr.append(less_than_str)
             elif i['user_info']['years_of_experience'] == 'range_more_than_20':
                 s = i['user_info']['years_of_experience'].split('_')
-                more_than_str = '< ' + str(s[3])
+                more_than_str = '> ' + str(s[3])
                 expArr.append(more_than_str)
             else:
                 s = i['user_info']['years_of_experience'].split('_')
                 newStr = str(s[1]) + '-' + str(s[2])
                 expArr.append(newStr)
+
+expObj={}
+
+def createExperienceMap(expArr):
+    for a in expArr:
+        if a in expObj:
+            expObj[a] = expObj[a] + 1      
+        else:
+            expObj[a] = 1
 
 
 '''
@@ -195,13 +202,16 @@ def get_docs_by_years(data, arrOfYears):
 if __name__ == "__main__":
     # get data for each tool
     sort_data_and_calculate_by_tool()
-    with open('server/SORTED_DATA/data_by_tools.json', 'w') as outfile:
-        json.dump(scoreDict, outfile)
+    with open('server/SORTED_DATA/data_by_tools_test.json', 'w') as outfile:
+        json.dump(calculateFreq, outfile)
 
     # experience of users
     get_all_values_for_experience(data)
-    with open('server/SORTED_DATA/experience_range.json', 'w') as outfile:
-        json.dump(scoreDict, outfile)
+    createExperienceMap(expArr)
+    returnArr = []
+    returnArr.append(expObj)
+    with open('server/SORTED_DATA/test_experience_range.json', 'w') as outfile:
+        json.dump(returnArr, outfile)
 
     # calculate language score or js as main language
     calculate_highest_and_lowest_score_for_js_as_main_langauge(data)
@@ -213,4 +223,4 @@ if __name__ == "__main__":
     get_all_years(data)
     get_docs_by_years(data, arrOfYears)
     with open('server/SORTED_DATA/all_docs_by_year.json', 'w') as outfile:
-        json.dump(scoreDict, outfile)
+        json.dump(allDocsByYear, outfile)

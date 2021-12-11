@@ -46,13 +46,26 @@ export default function PieChart() {
 			const svg = d3
 				.select(ref.current)
 				.append("svg")
-				.attr("width", width)
-				.attr("height", height)
+				.attr("width", "100%")
+				.attr("height", "100%")
+				.attr(
+					"viewBox",
+					"0 0 " +
+						Math.min(width, height) +
+						" " +
+						Math.min(width, height)
+				)
+				.attr("preserveAspectRatio", "xMinYMin")
 				.append("g")
 				.attr(
 					"transform",
-					"translate(" + width / 2 + "," + height / 2 + ")"
+					"translate(" +
+						Math.min(width, height) / 2 +
+						"," +
+						Math.min(width, height) / 2 +
+						")"
 				);
+
 
 			// array of colours on the pie chart
 			const color = d3
@@ -149,7 +162,7 @@ export default function PieChart() {
 	}, [dataReady]);
 
 	return (
-		<div className="container-fluid shadow-lg bg-white rounded w-50 ms-3 mt-5 m-0 rounded">
+		<div className="container-fluid shadow-lg bg-white rounded w-50 ms-3 mt-5 m-0 rounded" id="pie-chart">
 			<p className="pie-heading p-3 pb-0 h-6">
 				People Who would like JS to be their main language
 			</p>

@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import * as d3 from "d3";
+import Dropdown from "./Dropdown";
+
 const StackedBarChart = () => {
 	const ref = useRef(null);
 	const [rawData, setrawData] = useState({});
 	const [requestFullfilled, setrequestFullfilled] = useState(false);
 	const [loading, setloading] = useState(false);
+	const [sortedData, setsortedData] = useState([]);
+	const [updated, setupdated] = useState(false);
+	const [selected, setSelected] = useState("");
 
 	const fetchData = useCallback(async () => {
 		try {
@@ -15,6 +20,7 @@ const StackedBarChart = () => {
 				setloading(false);
 				setrawData(adata);
 				setrequestFullfilled(true);
+				setSelected(Object.keys(adata)[0]);
 			}
 		} catch (e) {
 			setloading(false);
@@ -26,123 +32,209 @@ const StackedBarChart = () => {
 		fetchData();
 	}, [fetchData]);
 
+	const clickTool = (tool) => {
+		setSelected(tool);
+		setupdated(true);
+	};
+
 	useEffect(() => {
 		if (requestFullfilled) {
-			const arrayOfData = Object.entries(rawData).map((e) => ({
+			var arrayOfData = Object.entries(rawData).map((e) => ({
 				[e[0]]: e[1],
 			}));
+			setsortedData(
+				arrayOfData.map((el) => {
+					return {
+						tool: Object.keys(el)[0],
+						...Object.values(el)[0],
+					};
+				})
+			);
+		}
+	}, [requestFullfilled]);
 
-			var keys = [];
-			for (var x in Object.values(arrayOfData[0])[0]) {
-				keys.push(x);
+	useEffect(() => {
+		if (sortedData.length) {
+			makeBarChart();
+		}
+	}, [sortedData]);
+
+	useEffect(() => {
+		if (updated) makeBarChart();
+	}, [updated]);
+
+	const makeBarChart = () => {
+		if (updated) {
+			d3.select(".svg").remove();
+		}
+		var selectedToolData = sortedData.filter((el) => el.tool === selected);
+
+		function dataProcessingForD3(selectedToolData) {
+			var arr = [];
+			for (const x in selectedToolData[0]) {
+				if (x !== "tool") {
+					arr.push({
+						[x]: selectedToolData[0][x],
+					});
+				}
 			}
-			var sortedData = arrayOfData.map((el) => {
-				return {
-					tool: Object.keys(el)[0],
-					...Object.values(el)[0],
-				};
-			});
+			return arr;
+		}
 
-			var color = ["#bae4bc", "#7bccc4", "#43a2ca", "#bae4bc"];
-
+		let d3Data = dataProcessingForD3(selectedToolData);
+		d3Data = d3Data.sort((a,b)=> (Object.keys(a) > Object.keys(b) ? 1 : -1))
+		
+		if (d3Data.length) {
 			var margin = { top: 20, right: 160, bottom: 35, left: 30 };
 
-			var width = 960 - margin.left - margin.right,
+			var width = 760 - margin.left - margin.right,
 				height = 500 - margin.top - margin.bottom;
 
+			// Define Svg responsive
 			var svg = d3
 				.select(ref.current)
 				.append("svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
+				.attr("class", "svg")
+				.attr("width", "100%")
+				.attr("height", "100%")
+				.attr(
+					"viewBox",
+					"0 0 760 500"
+				)
+				.attr("preserveAspectRatio", "xMinYMin")
 				.append("g")
 				.attr(
 					"transform",
 					"translate(" + margin.left + "," + margin.top + ")"
 				);
-
-			// Start the stacked bar chart
-			var stack = d3
-				.stack()
-				.keys(keys)
-				.order(d3.stackOrderNone)
-				.offset(d3.stackOffsetNone);
-
-			var series = stack(sortedData);
-
-			var x = d3
-				.scaleBand()
-				.domain(
-					series[0].map(function (d) {
-						return d.data.tool;
-					})
-				)
-				.range([10, width - 10], 0.02);
-
-			var y = d3
-				.scaleLinear()
-				.domain([
-					0,
-					d3.max(series, function (d) {
-						return d3.max(d, function (d) {
-							return d[0] + d[1];
-						});
-					}),
-				])
-				.range([height, 0]);
-
-			// Define and draw axes
-			var yAxis = d3.axisLeft().scale(y).tickSize(-width, 0, 0);
-
-			var xAxis = d3
-				.axisBottom()
-				.scale(x)
-				.tickFormat(function (d) {
-					return d;
-				});
-
-			svg.append("g").attr("class", "y axis").call(yAxis);
-
-			svg.append("g")
-				.attr("class", "x axis")
-				.attr("transform", "translate(0," + height + ")")
-				.call(xAxis);
-
-			// Create groups for each series, rects for each segment
-			var groups = svg
-				.selectAll("g")
-				.data(series)
-				.enter()
-				.append("g")
-				.attr("class", "cost")
-				.style("fill", function (d, i) {
-					return color[i];
-				});
-
-			groups
-				.selectAll("rect")
-				.data(function (d) {
-					return d;
+			
+			// Clear previous elements to update data
+			svg.selectAll("rect").remove();
+			
+			// Define x and y axis 
+			var x = d3.scaleBand().range([0, width]).padding(0.1);
+			var y = d3.scaleLinear().range([height, 0]);
+			
+			// Define data on x and y axis
+			x.domain(
+				d3Data.map(function (d) {
+					return Object.keys(d)[0];
 				})
+			);
+			y.domain([
+				0,
+				d3.max(d3Data, function (d) {
+					return Object.values(d)[0];
+				}),
+			]);
+
+			// Add X and Y axis to the svg
+			svg.append("g")
+				.attr("transform", "translate(0," + height + ")")
+				.call(d3.axisBottom(x))
+				.append("text");
+
+			svg.append("g").call(
+				d3.axisLeft(y).tickFormat((d) => {
+					return d === 0 ? 0 : d / 1000 + "k";
+				})
+			);
+
+			// Tooltip
+			const toolDiv = d3
+				.select(ref.current)
+				.append("div")
+				.attr("class", "tooldiv");
+
+			
+			// Color gradient for bars
+			const defs = svg.append("defs");
+			const bgGradient = defs
+				.append("linearGradient")
+				.attr("id", "bg-gradient")
+				.attr("gradientTransform", "rotate(105)");
+			bgGradient
+				.append("stop")
+				.attr("stop-color", "#1a759f")
+				.attr("offset", "0%");
+			bgGradient
+				.append("stop")
+				.attr("stop-color", "#76c893")
+				.attr("offset", "100%");
+			
+			// Create bars
+			svg.selectAll(".bar")
+				.data(d3Data)
 				.enter()
 				.append("rect")
+				.attr("class", "bar")
 				.attr("x", function (d) {
-					console.log(d);
-					// return x(d.tool);
+					return x(Object.keys(d)[0]);
+				})
+				.attr("width", x.bandwidth())
+				.attr("y", function (d) {
+					return y(0);
+				})
+				.attr("height", function (d) {
+					return height - y(0);
 				});
-			// .attr("y", function (d) {
-			// 	return y(d.y0 + d.y);
-			// })
-			// .attr("height", function (d) {
-			// 	return y(d.y0) - y(d.y0 + d.y);
-			// })
-			// .attr("width", x.rangeBand());
+			
+			// Add animation to the bars on page load
+			svg.selectAll("rect")
+				.transition()
+				.duration(800)
+				.attr("y", function (d) {
+					return y(Object.values(d)[0]);
+				})
+				.attr("height", function (d) {
+					return height - y(Object.values(d)[0]);
+				})
+				.style("fill", "url(#bg-gradient)")
+				.delay(function (d, i) {
+					return i * 100;
+				});
+			
+			// Hover functions for tooltip
+			svg.selectAll("rect")
+				.on("mouseover", (e, d) => {
+					toolDiv.style("visibility", "visible").html(
+						`<p style="margin:0;padding:10px 0 0px 10px;font-weight: 900;font-size:12px">
+						${Object.values(d)} 
+						</p>
+						<p style="margin:0;padding:0px 0px 0px 10px;font-weight: 900;font-size:12px">
+						Participants
+					</p>`
+					);
+				})
+				.on("mousemove", (e) => {
+					toolDiv
+						.style("top", e.pageY - 50 + "px")
+						.style("left", e.pageX - 50 + "px");
+				})
+				.on("mouseout", () => {
+					toolDiv.style("visibility", "hidden");
+				});
 		}
-	}, [requestFullfilled]);
+		setupdated(false);
+	};
 
 	return (
-		<div>
-			<div ref={ref}></div>
+		<div
+			className="container-fluid shadow-lg bg-white rounded w-50 ms-3 mt-5 m-0 rounded"
+			id="bar-chart"
+		>
+			<p className="pie-heading p-3 pb-0 h-6">Preference By JS Tool</p>
+
+			{!loading && (
+				<div>
+					<Dropdown
+						selected={selected}
+						clickTool={clickTool}
+						data={sortedData}
+					/>
+					<div ref={ref}></div>
+				</div>
+			)}
 		</div>
 	);
 };

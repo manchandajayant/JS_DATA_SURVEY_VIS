@@ -6,8 +6,10 @@ export default function App() {
 	return (
 		<div>
 			<h2 className="text-center">State of JS data visualisation</h2>
-			<PieComponent />
-			<StackedBarChart/>
+			<div className="d-flex justify-content-evenly" >
+				<PieComponent />
+				<StackedBarChart />
+			</div>
 		</div>
 	);
 }
