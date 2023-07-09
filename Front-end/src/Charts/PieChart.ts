@@ -1,12 +1,9 @@
 import * as d3 from "d3";
 import { Dispatch, SetStateAction } from "react";
-
-type Data = Record<string, any>;
-export type D3ToolTip = d3.Selection<HTMLDivElement, unknown, null, undefined>;
-export type ObjectGeneric = Record<string, any>;
+import { D3ToolTip, Data, DataByToolsType, ObjectGeneric } from "./Types/types";
 
 export const makePieChart = (
-    data: any,
+    data: DataByToolsType[],
     ref: React.RefObject<HTMLInputElement>,
     setlabels: Dispatch<SetStateAction<ObjectGeneric[]>>
 ) => {
@@ -25,7 +22,7 @@ export const makePieChart = (
         .attr("transform", "translate(" + Math.min(width, height) / 2 + "," + Math.min(width, height) / 2 + ")");
 
     // array of colours on the pie chart
-    const color = d3.scaleOrdinal().domain(data).range(ColorRange);
+    const color = d3.scaleOrdinal().domain(data as Iterable<string>).range(ColorRange);
 
     // Compute the position of each group on the pie:
     const pie = d3
@@ -37,7 +34,7 @@ export const makePieChart = (
     const data_ready = pie(data);
 
     // calculate % of each piece of data
-    const totalValue = data.reduce((acc: number, curr: number) => acc + (Object as ObjectGeneric).values(curr)[0], 0);
+    const totalValue = data.reduce((acc: number, curr: DataByToolsType) => acc + (Object as ObjectGeneric).values(curr)[0], 0);
 
     //Tooltip
     const toolDiv = d3.select(ref.current).append("div").attr("class", "tooldiv");

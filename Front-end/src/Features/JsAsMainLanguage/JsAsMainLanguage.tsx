@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import useFetch from "../../Hooks/useFetch";
-import { ObjectGeneric, makePieChart } from "../../Charts/PieChart";
+import { ObjectGeneric } from "../../Charts/Types/types";
+import { makePieChart } from "../../Charts/PieChart";
 
 const JsAsMainLanguage = () => {
     const [labels, setlabels] = useState<ObjectGeneric[]>([]);

@@ -4,14 +4,14 @@ import useFetch from "../../Hooks/useFetch";
 import { makeBarChart } from "../../Charts/BarChart";
 
 import Dropdown from "../../Components/Dropdown/Dropdown";
-import { ObjectGeneric } from "../../Charts/PieChart";
+import { DataByToolTypeMap, LoadDataByToolTypeMap, ObjectGeneric } from "../../Charts/Types/types";
 
 const DataByTools = () => {
     const ref = useRef<HTMLInputElement>(null);
-    const [updated, setupdated] = useState(false);
-    const [selected, setSelected] = useState("");
+    const [updated, setupdated] = useState<boolean>(false);
+    const [selected, setSelected] = useState<string>("");
 
-    const clickTool = (option: any) => {
+    const clickTool = (option: DataByToolTypeMap) => {
         setSelected(option.tool);
         setupdated(true);
     };
@@ -48,15 +48,15 @@ const DataByTools = () => {
     );
 };
 
-const getProcessedData = (data: any[]) => {
+const getProcessedData = (data: LoadDataByToolTypeMap[]): DataByToolTypeMap[] | [] => {
     if (!data) return [];
-    var convertObjectToArray = (Object as ObjectGeneric).entries(data).map((e: ObjectGeneric) => ({ [e[0]]: e[1] }));
-    return convertObjectToArray.map((el: any) => {
-        return {
-            tool: Object.keys(el)[0],
-            ...(Object as ObjectGeneric).values(el)[0],
-        };
-    });
+    var convertObjectToArray = (Object as ObjectGeneric)
+        .entries(data)
+        .map((element: ObjectGeneric) => ({ [element[0]]: element[1] }));
+    return convertObjectToArray.map((value: LoadDataByToolTypeMap): DataByToolTypeMap[] => ({
+        tool: Object.keys(value)[0],
+        ...(Object as ObjectGeneric).values(value)[0],
+    }));
 };
 
 export default DataByTools;

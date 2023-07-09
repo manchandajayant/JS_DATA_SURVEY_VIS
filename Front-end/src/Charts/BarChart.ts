@@ -1,16 +1,15 @@
 import * as d3 from "d3";
 import { Dispatch, SetStateAction } from "react";
-import { D3ToolTip, ObjectGeneric } from "./PieChart";
+import { D3ToolTip, DataByToolTypeMap, ObjectGeneric, ToolType } from "./Types/types";
 
 export const makeBarChart = (
-    processData: ObjectGeneric[],
+    processData: DataByToolTypeMap[],
     updated: boolean,
     setUpdated: Dispatch<SetStateAction<boolean>>,
     ref: React.RefObject<HTMLInputElement>,
-    selected?: any
+    selected?: string
 ) => {
     if (updated) d3.select(".svg").remove();
-
     let selectedToolData = getSelectedToolData(processData, selected);
 
     let d3Data = dataProcessingForD3(selectedToolData).sort((a: number, b: number) =>
@@ -38,8 +37,8 @@ export const makeBarChart = (
         let y = d3.scaleLinear().range([height, 0]);
 
         // Define data on x and y axis
-        x.domain(d3Data.map((d: ObjectGeneric) => (Object as Record<string, any>).keys(d)[0]) as Iterable<string>);
-        y.domain([0, d3.max(d3Data, (d) => (Object as Record<string, any>).values(d)[0])] as Iterable<number>);
+        x.domain(d3Data.map((d: ObjectGeneric) => (Object as ObjectGeneric).keys(d)[0]) as Iterable<string>);
+        y.domain([0, d3.max(d3Data, (d) => (Object as ObjectGeneric).values(d)[0])] as Iterable<number>);
 
         // Add X and Y axis to the svg
         svg.append("g")
@@ -68,7 +67,7 @@ export const makeBarChart = (
             .enter()
             .append("rect")
             .attr("class", "bar")
-            .attr("x", (d) => x((Object as Record<string, any>).keys(d)[0])!)
+            .attr("x", (d) => x((Object as ObjectGeneric).keys(d)[0])!)
             .attr("width", x.bandwidth())
             .attr("y", (d) => y(0))
             .attr("height", (d) => height - y(0));
@@ -77,8 +76,8 @@ export const makeBarChart = (
         svg.selectAll("rect")
             .transition()
             .duration(800)
-            .attr("y", (d) => y((Object as Record<string, any>).values(d)[0]))
-            .attr("height", (d) => height - y((Object as Record<string, any>).values(d)[0]))
+            .attr("y", (d) => y((Object as ObjectGeneric).values(d)[0]))
+            .attr("height", (d) => height - y((Object as ObjectGeneric).values(d)[0]))
             .style("fill", "url(#bg-gradient)")
             .delay((d, i) => i * 100);
 
@@ -95,7 +94,7 @@ let margin = { top: 20, right: 160, bottom: 35, left: 30 };
 let width = 760 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-const getSelectedToolData = (processData: ObjectGeneric[], selected: boolean) =>
+const getSelectedToolData = (processData: ObjectGeneric[], selected?: string) =>
     processData.filter((toolData) => toolData.tool === (selected ? selected : processData[0].tool));
 
 const mouseOver = (d: ObjectGeneric, toolDiv: D3ToolTip) => {
@@ -122,7 +121,7 @@ const dataProcessingForD3 = (selectedToolData: ObjectGeneric[]) => {
     for (const tool in selectedToolData[0]) {
         if (tool !== "tool") {
             processedData.push({
-                [tool]: selectedToolData ? selectedToolData[0][tool] : "",
+                [tool]: selectedToolData ? (selectedToolData[0][tool] as ToolType) : "",
             });
         }
     }
