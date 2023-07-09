@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const url = "http://localhost:4000";
 
-const useFetch = (query) => {
+const useFetch = (query: string) => {
     const [status, setStatus] = useState("idle");
     const [data, setData] = useState([]);
 

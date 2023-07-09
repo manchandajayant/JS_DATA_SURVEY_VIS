@@ -4,13 +4,14 @@ import useFetch from "../../Hooks/useFetch";
 import { makeBarChart } from "../../Charts/BarChart";
 
 import Dropdown from "../../Components/Dropdown/Dropdown";
+import { ObjectGeneric } from "../../Charts/PieChart";
 
 const DataByTools = () => {
-    const ref = useRef(null);
+    const ref = useRef<HTMLInputElement>(null);
     const [updated, setupdated] = useState(false);
     const [selected, setSelected] = useState("");
 
-    const clickTool = (option) => {
+    const clickTool = (option: any) => {
         setSelected(option.tool);
         setupdated(true);
     };
@@ -47,13 +48,13 @@ const DataByTools = () => {
     );
 };
 
-const getProcessedData = (data) => {
+const getProcessedData = (data: any[]) => {
     if (!data) return [];
-    var convertObjectToArray = Object.entries(data).map((e) => ({ [e[0]]: e[1] }));
-    return convertObjectToArray.map((el) => {
+    var convertObjectToArray = (Object as ObjectGeneric).entries(data).map((e: ObjectGeneric) => ({ [e[0]]: e[1] }));
+    return convertObjectToArray.map((el: any) => {
         return {
             tool: Object.keys(el)[0],
-            ...Object.values(el)[0],
+            ...(Object as ObjectGeneric).values(el)[0],
         };
     });
 };

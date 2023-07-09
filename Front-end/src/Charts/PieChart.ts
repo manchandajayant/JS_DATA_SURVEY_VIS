@@ -1,6 +1,15 @@
 import * as d3 from "d3";
+import { Dispatch, SetStateAction } from "react";
 
-export const makePieChart = (data, ref, setlabels) => {
+type Data = Record<string, any>;
+export type D3ToolTip = d3.Selection<HTMLDivElement, unknown, null, undefined>;
+export type ObjectGeneric = Record<string, any>;
+
+export const makePieChart = (
+    data: any,
+    ref: React.RefObject<HTMLInputElement>,
+    setlabels: Dispatch<SetStateAction<ObjectGeneric[]>>
+) => {
     // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
     const radius = Math.min(width, height) / 2 - margin;
 
@@ -20,21 +29,21 @@ export const makePieChart = (data, ref, setlabels) => {
 
     // Compute the position of each group on the pie:
     const pie = d3
-        .pie()
+        .pie<Data>()
         .startAngle(1.1 * Math.PI)
         .endAngle(3.1 * Math.PI)
-        .value((d) => Object.values(d));
+        .value((d) => (Object as ObjectGeneric).values(d));
 
     const data_ready = pie(data);
 
     // calculate % of each piece of data
-    const totalValue = data.reduce((acc, curr) => acc + Object.values(curr)[0], 0);
+    const totalValue = data.reduce((acc: number, curr: number) => acc + (Object as ObjectGeneric).values(curr)[0], 0);
 
     //Tooltip
     const toolDiv = d3.select(ref.current).append("div").attr("class", "tooldiv");
 
     const arc = d3
-        .arc()
+        .arc<d3.PieArcDatum<Data>>()
         .innerRadius(radius - 30)
         .outerRadius(radius);
 
@@ -46,30 +55,30 @@ export const makePieChart = (data, ref, setlabels) => {
         .transition()
         .delay((d, i) => i * 50)
         .duration(350)
-        .attrTween("d", (d) => {
+        .attrTween("d", (d: d3.PieArcDatum<Data>): ((t: number) => string) => {
             var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
-            return (t) => {
-                d.endAngle = i(t);
-                return arc(d);
+            return (t: number) => {
+                d.endAngle = i(t) as number;
+                return arc(d) as string;
             };
         })
-        .attr("fill", (d) => {
-            setlabels((key) => [
+        .attr("fill", (d: d3.PieArcDatum<Data>): string => {
+            setlabels((key: ObjectGeneric[]) => [
                 ...key,
                 {
-                    key: Object.keys(d.data)[0],
-                    color: color(Object.keys(d.data)[0]),
+                    key: (Object as ObjectGeneric).keys(d.data)[0],
+                    color: color((Object as ObjectGeneric).keys(d.data)[0]),
                 },
             ]);
-            return color(Object.keys(d.data)[0]);
+            return color((Object as ObjectGeneric).keys(d.data)[0]) as string;
         })
         .attr("stroke", "none")
         .style("stroke-width", "2px")
         .style("opacity", 0.7);
 
     diagram
-        .on("mouseover", (e, d) => mouseOver(e, d, toolDiv))
-        .on("mousemove", (e) => mouseMove(e, toolDiv))
+        .on("mouseover", (e: ObjectGeneric, d: d3.PieArcDatum<Data>) => mouseOver(d, toolDiv, totalValue))
+        .on("mousemove", (e: ObjectGeneric) => mouseMove(e, toolDiv))
         .on("mouseout", () => mouseOut(toolDiv));
 };
 
@@ -78,22 +87,25 @@ const width = 450;
 const height = 450;
 const margin = 40;
 
-const mouseOver = (e, d, toolDiv) =>
+const toolDivStyles = {
+    key: "margin:0;padding:10px 0 0px 10px;font-weight: 900;font-size:12px",
+    values: "margin:0;padding:0px 0 2px 10px",
+};
+
+const mouseOver = (d: d3.PieArcDatum<Data>, toolDiv: D3ToolTip, totalValue: number) =>
     toolDiv
         .style("visibility", "visible")
         .html(
-            `<p style="margin:0;padding:10px 0 0px 10px;font-weight: 900;font-size:12px">${
-                Object.keys(d.data)[0]
-            }</p>` +
+            `<p style=${toolDivStyles.key}>${Object.keys(d.data)[0]}</p>` +
                 "<br/>" +
-                `<p style="margin:0;padding:0px 0 2px 10px">${Math.round(
-                    (Object.values(d.data)[0] / totalValue) * 100
+                `<p style=${toolDivStyles.values}>${Math.round(
+                    ((Object as ObjectGeneric).values(d.data)[0] / totalValue) * 100
                 )}%</p>`
         );
 
-const mouseMove = (e, toolDiv) => toolDiv.style("top", e.pageY - 50 + "px").style("left", e.pageX - 50 + "px");
+const mouseMove = (e: ObjectGeneric, toolDiv: D3ToolTip) =>
+    toolDiv.style("top", e.pageY - 50 + "px").style("left", e.pageX - 50 + "px");
 
-const mouseOut = (toolDiv) => toolDiv.style("visibility", "hidden");
+const mouseOut = (toolDiv: D3ToolTip) => toolDiv.style("visibility", "hidden");
 
-
-const ColorRange = ["#184e77", "#1a759f", "#34a0a4", "#76c893"]
+const ColorRange: string[] = ["#184e77", "#1a759f", "#34a0a4", "#76c893"];

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "../../styles/dropdown.css";
 
-const Dropdown = ({ selected, onClick, data }) => {
+const Dropdown = ({ selected, onClick, data }: any) => {
     const [isActive, setIsActive] = useState(false);
-    
+
     return (
         <div className="dropdown d-flex justify-content-end">
             <div
@@ -18,7 +18,7 @@ const Dropdown = ({ selected, onClick, data }) => {
             </div>
             {isActive && (
                 <div className="dropdown-content">
-                    {data.map((option, index) => (
+                    {data.map((option: any, index: number) => (
                         <div
                             key={index}
                             onClick={() => {

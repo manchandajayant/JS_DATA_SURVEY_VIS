@@ -1,7 +1,7 @@
 import React from "react";
 
 import DataByTools from "./Features/DataByTools/DataByTools";
-import JsAsMainLanguage from "./Features/jsAsMainLanguage/jsAsMainLanguage";
+import JsAsMainLanguage from "./Features/JsAsMainLanguage/JsAsMainLanguage";
 
 import "./styles/app.css";
 

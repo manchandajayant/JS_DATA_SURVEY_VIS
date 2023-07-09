@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import useFetch from "../../Hooks/useFetch";
-import { makePieChart } from "../../Charts/PieChart";
+import { ObjectGeneric, makePieChart } from "../../Charts/PieChart";
 
 const JsAsMainLanguage = () => {
-    const [labels, setlabels] = useState([]);
-    const ref = useRef(null);
+    const [labels, setlabels] = useState<ObjectGeneric[]>([]);
+    const ref = useRef<HTMLInputElement>(null);
 
     const { data, status } = useFetch("jsmainlangauge");
 
@@ -19,7 +19,7 @@ const JsAsMainLanguage = () => {
             {status === "fetched" && data.length && (
                 <div>
                     <div id="chart-key">
-                        {labels.map((el, index) => {
+                        {labels.map((el: ObjectGeneric, index) => {
                             return (
                                 <div key={index} className="d-flex justify-content-end">
                                     <p className="pe-2 m-0" id="labels-pie-chart">
