@@ -1,15 +1,18 @@
 import React from "react";
-import PieComponent from "./Components/PieComponent";
-import "./App.css";
-import StackedBarChart from "./Components/StackedBarChart";
+
+import DataByTools from "./Features/DataByTools/DataByTools";
+import JsAsMainLanguage from "./Features/jsAsMainLanguage/jsAsMainLanguage";
+
+import "./styles/app.css";
+
 export default function App() {
-	return (
-		<div>
-			<h2 className="text-center">State of JS data visualisation</h2>
-			<div className="d-flex justify-content-evenly" >
-				<PieComponent />
-				<StackedBarChart />
-			</div>
-		</div>
-	);
+    return (
+        <div>
+            <h2 className="text-center">State of JS data visualisation</h2>
+            <div className="d-flex justify-content-evenly">
+                <JsAsMainLanguage />
+                <DataByTools />
+            </div>
+        </div>
+    );
 }
