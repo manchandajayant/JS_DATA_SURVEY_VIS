@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { Dispatch, SetStateAction } from "react";
-import { D3ToolTip, DataByToolTypeMap, ObjectGeneric, ToolType } from "./Types/types";
+import { D3ToolTip, DataByToolTypeMap, ObjectGeneric, ToolType } from "../Types/types";
 
 export const makeBarChart = (
     processData: DataByToolTypeMap[],

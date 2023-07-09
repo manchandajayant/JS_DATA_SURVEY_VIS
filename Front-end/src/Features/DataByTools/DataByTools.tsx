@@ -4,7 +4,7 @@ import useFetch from "../../Hooks/useFetch";
 import { makeBarChart } from "../../Charts/BarChart";
 
 import Dropdown from "../../Components/Dropdown/Dropdown";
-import { DataByToolTypeMap, LoadDataByToolTypeMap, ObjectGeneric } from "../../Charts/Types/types";
+import { DataByToolTypeMap, LoadDataByToolTypeMap, ObjectGeneric } from "../../Types/types";
 
 const DataByTools = () => {
     const ref = useRef<HTMLInputElement>(null);

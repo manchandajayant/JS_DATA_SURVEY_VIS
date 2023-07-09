@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { Dispatch, SetStateAction } from "react";
-import { D3ToolTip, Data, DataByToolsType, ObjectGeneric } from "./Types/types";
+import { D3ToolTip, Data, DataByToolsType, ObjectGeneric } from "../Types/types";
 
 export const makePieChart = (
     data: DataByToolsType[],
