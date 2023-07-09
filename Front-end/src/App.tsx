@@ -5,7 +5,7 @@ import JsAsMainLanguage from "./Features/JsAsMainLanguage/JsAsMainLanguage";
 
 import "./styles/app.css";
 
-export default function App() {
+const App: React.FC = (): JSX.Element => {
     return (
         <div>
             <h2 className="text-center">State of JS data visualisation</h2>
@@ -15,4 +15,6 @@ export default function App() {
             </div>
         </div>
     );
-}
+};
+
+export default App;

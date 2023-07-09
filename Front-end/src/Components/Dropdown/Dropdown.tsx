@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import "../../styles/dropdown.css";
+import { DataByToolTypeMap } from "../../Types/types";
 
-const Dropdown = ({ selected, onClick, data }: any) => {
+export type PropsDropDown = {
+    selected: string;
+    onClick: (option: DataByToolTypeMap) => void;
+    data: DataByToolTypeMap[];
+};
+
+const Dropdown = ({ selected, onClick, data }: PropsDropDown) => {
     const [isActive, setIsActive] = useState(false);
 
     return (
@@ -18,7 +25,7 @@ const Dropdown = ({ selected, onClick, data }: any) => {
             </div>
             {isActive && (
                 <div className="dropdown-content">
-                    {data.map((option: any, index: number) => (
+                    {data.map((option: DataByToolTypeMap, index: number) => (
                         <div
                             key={index}
                             onClick={() => {
@@ -29,7 +36,7 @@ const Dropdown = ({ selected, onClick, data }: any) => {
                         >
                             {option.tool === "nofrontendframework"
                                 ? "No Front End FrameWork".toUpperCase()
-                                : option.tool.toUpperCase()}
+                                : (option.tool.toUpperCase() as string)}
                         </div>
                     ))}
                 </div>

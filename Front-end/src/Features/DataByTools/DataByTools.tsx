@@ -4,9 +4,9 @@ import useFetch from "../../Hooks/useFetch";
 import { makeBarChart } from "../../Charts/BarChart";
 
 import Dropdown from "../../Components/Dropdown/Dropdown";
-import { DataByToolTypeMap, LoadDataByToolTypeMap, ObjectGeneric } from "../../Types/types";
+import { DataByToolTypeMap, LoadDataByToolTypeMap, LoadDataType, ObjectGeneric } from "../../Types/types";
 
-const DataByTools = () => {
+const DataByTools: React.FC = (): JSX.Element => {
     const ref = useRef<HTMLInputElement>(null);
     const [updated, setupdated] = useState<boolean>(false);
     const [selected, setSelected] = useState<string>("");
@@ -48,7 +48,7 @@ const DataByTools = () => {
     );
 };
 
-const getProcessedData = (data: LoadDataByToolTypeMap[]): DataByToolTypeMap[] | [] => {
+const getProcessedData = (data: LoadDataType): DataByToolTypeMap[] | [] => {
     if (!data) return [];
     var convertObjectToArray = (Object as ObjectGeneric)
         .entries(data)

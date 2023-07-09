@@ -1,9 +1,9 @@
 import * as d3 from "d3";
 import { Dispatch, SetStateAction } from "react";
-import { D3ToolTip, Data, DataByToolsType, ObjectGeneric } from "../Types/types";
+import { D3ToolTip, Data, DataByMainLanguageAnswerType, ObjectGeneric } from "../Types/types";
 
 export const makePieChart = (
-    data: DataByToolsType[],
+    data: DataByMainLanguageAnswerType[],
     ref: React.RefObject<HTMLInputElement>,
     setlabels: Dispatch<SetStateAction<ObjectGeneric[]>>
 ) => {
@@ -34,7 +34,7 @@ export const makePieChart = (
     const data_ready = pie(data);
 
     // calculate % of each piece of data
-    const totalValue = data.reduce((acc: number, curr: DataByToolsType) => acc + (Object as ObjectGeneric).values(curr)[0], 0);
+    const totalValue = data.reduce((acc: number, curr: DataByMainLanguageAnswerType) => acc + (Object as ObjectGeneric).values(curr)[0], 0);
 
     //Tooltip
     const toolDiv = d3.select(ref.current).append("div").attr("class", "tooldiv");

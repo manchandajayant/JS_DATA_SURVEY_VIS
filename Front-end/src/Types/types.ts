@@ -1,6 +1,6 @@
 type MainLanguageAnswerType = "Definitely no" | "No, not really" | "Yeah, why not?" | "Definitely yes";
 
-export type DataByToolsType = Record<MainLanguageAnswerType, number>;
+export type DataByMainLanguageAnswerType = Record<MainLanguageAnswerType, number>;
 
 export type Data = Record<string, any>;
 export type D3ToolTip = d3.Selection<HTMLDivElement, unknown, null, undefined>;
@@ -73,3 +73,5 @@ export type DataByToolTypeMap = {
     not_interested: number;
     never_heard: number;
 };
+
+export type LoadDataType = Record<any, any>[] | undefined | LoadDataByToolTypeMap[] | DataByMainLanguageAnswerType[];
